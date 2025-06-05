@@ -1,0 +1,298 @@
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.editor-preview-container {
+  display: flex;
+  gap: 20px;
+}
+
+.editor, .whatsapp-preview {
+  flex: 1;
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input, .form-group textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.button-editor {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.whatsapp-container {
+  background-color: #e5ddd5;
+  padding: 20px;
+  border-radius: 8px;
+  min-height: 400px;
+}
+
+.whatsapp-message {
+  background-color: white;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 1px 0.5px rgba(0,0,0,0.13);
+}
+
+.message-header {
+  font-weight: bold;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+}
+
+.message-footer {
+  font-size: 0.8em;
+  color: #666;
+  border-top: 1px solid #eee;
+  padding-top: 8px;
+  margin-top: 8px;
+}
+
+.message-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.whatsapp-button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.whatsapp-button.url {
+  background-color: #25D366;
+  color: white;
+}
+
+.whatsapp-button.call {
+  background-color: #128C7E;
+  color: white;
+}
+
+.whatsapp-button.quick_reply {
+  background-color: white;
+  border: 1px solid #25D366;
+  color: #25D366;
+}
+
+
+.whatsapp-header {
+  padding: 10px 16px;
+  background-color: var(--primary-color);
+  color: white;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.dark-whatsapp .whatsapp-header {
+  background-color: #1f2c33;
+}
+
+.wa-contact {
+  display: flex;
+  align-items: center;
+}
+
+.wa-contact-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+
+.wa-contact-info {
+  flex: 1;
+}
+
+.wa-contact-name {
+  font-weight: bold;
+}
+
+.wa-contact-status {
+  font-size: 0.8em;
+  opacity: 0.8;
+}
+
+
+/* App.css */
+/* Estilos existentes... */
+
+/* Estilos gerais para temas */
+.light-theme {
+  --bg-color: #ffffff;
+  --text-color: #333333;
+  --primary-color: #25D366;
+  --secondary-color: #128C7E;
+  --border-color: #dddddd;
+}
+
+.dark-theme {
+  --bg-color: #121212;
+  --text-color: #e0e0e0;
+  --primary-color: #25D366;
+  --secondary-color: #128C7E;
+  --border-color: #333333;
+}
+
+.app-container {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* Estilos específicos para a prévia do WhatsApp */
+.light-whatsapp {
+  background-color: #e5ddd5;
+  /* background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAIAAAAC64paAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RDk0RkNCNDY1OTVBMTFFQTg2N0ZFN0U4MkQ5Q0YxODciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RDk0RkNCNDc1OTVBMTFFQTg2N0ZFN0U4MkQ5Q0YxODciPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpEOTRGQ0I0NDU5NUExMUVBODY3RkU3RTgyRDlDRjE4NyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpEOTRGQ0I0NTU5NUExMUVBODY3RkU3RTgyRDlDRjE4NyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PvXGU/QAAABASURBVHjaYvz//z8DKYCJgVRAikJGRkYGBgZWVlYg/vfvH1D8z58/QPHv378D2X/+/AHyf/78CRT/9esXUPz79+9A8c+fPwPFgQABBgB8VQj0qZ5z5AAAAABJRU5ErkJggg=='); */
+}
+
+.dark-whatsapp {
+  background-color: #0a1014;
+  background-image: none;
+}
+
+.theme-toggle {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  background-color: var(--secondary-color);
+}
+
+/* Ajustes para o modo escuro no editor */
+.dark-theme .editor,
+.dark-theme .whatsapp-preview {
+  border-color: var(--border-color);
+  background-color: #1e1e1e;
+}
+
+.dark-theme .form-group input,
+.dark-theme .form-group textarea,
+.dark-theme .button-editor select,
+.dark-theme .button-editor input {
+  background-color: #2d2d2d;
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+/* Ajustes para a mensagem no modo escuro */
+.dark-whatsapp .whatsapp-message {
+  background-color: #2a2f32;
+  color: #e1e1e1;
+}
+
+.dark-whatsapp .message-header {
+  border-bottom-color: #333;
+}
+
+.dark-whatsapp .message-footer {
+  border-top-color: #333;
+  color: #a0a0a0;
+}
+
+
+
+/* Adicione ao App.css */
+
+.save-options {
+  position: relative;
+}
+
+.save-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background-color: #34B7F1;
+  color: white;
+}
+
+.save-button:hover {
+  background-color: #2a9bd8;
+}
+
+.template-name-input {
+  width: 100%;
+  padding: 8px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.confirm-save {
+  padding: 8px 16px;
+  background-color: #25D366;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.close-modal {
+  padding: 8px 16px;
+  background-color: #f1f1f1;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Estilos para modo escuro */
+.dark-theme .save-button {
+  background-color: #2a9bd8;
+}
+
+.dark-theme .template-name-input {
+  background-color: #2d2d2d;
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+.dark-theme .close-modal {
+  background-color: #444;
+  color: #e0e0e0;
+}
