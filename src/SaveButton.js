@@ -51,6 +51,15 @@ const SaveButton = ({ template }) => {
       });
     }
 
+       // Adiciona headerimage se existir
+    if (template.headerImage) {
+      whatsappTemplate.components.push({
+        type: 'HEADER',
+        format: 'TEXT',
+        text: template.headerImage,
+      });
+    }
+
     // Adiciona footer se existir
     if (template.footer) {
       whatsappTemplate.components.push({

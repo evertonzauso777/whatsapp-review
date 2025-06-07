@@ -27,7 +27,7 @@
 }
 
 .form-group input, .form-group textarea {
-  width: 100%;
+  width: 95%;
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -223,8 +223,6 @@
   color: #a0a0a0;
 }
 
-
-
 /* Adicione ao App.css */
 
 .save-options {
@@ -296,3 +294,213 @@
   background-color: #444;
   color: #e0e0e0;
 }
+
+
+/* Estilos gerais */
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #1f2937;
+}
+
+/* Container do editor de botões */
+.button-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+  transition: box-shadow 0.2s ease;
+}
+
+.button-editor:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Elementos do formulário */
+.button-select,
+.button-input {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.button-select:focus,
+.button-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.button-input {
+  flex: 1;
+}
+
+/* Botão de remover */
+.remove-button {
+  padding: 0.5rem 1rem;
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.remove-button:hover {
+  background-color: #dc2626;
+}
+
+.remove-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3);
+}
+
+/* Responsividade */
+@media (min-width: 768px) {
+  .button-editor {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+/* ---------------------------------------------------------*/
+
+/* Container da barra de ferramentas */
+.formatting-toolbar {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin: 1rem 0;
+  padding: 0.5rem 0;
+}
+
+/* Estilo base para todos os botões */
+.format-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+
+/* Efeitos comuns */
+.format-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.format-button:active {
+  transform: translateY(0);
+}
+
+.format-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.3);
+}
+
+/* Botão Negrito */
+.bold-button {
+  background-color: #edf2f7;
+  color: #2d3748;
+}
+
+.bold-button:hover {
+  background-color: #e2e8f0;
+}
+
+.bold-button b {
+  font-weight: 900;
+}
+
+/* Botão Itálico */
+.italic-button {
+  background-color: #ebf8ff;
+  color: #3182ce;
+}
+
+.italic-button:hover {
+  background-color: #bee3f8;
+}
+
+.italic-button i {
+  font-style: italic;
+}
+
+/* Botão Variável */
+.variable-button {
+  background-color: #f0fff4;
+  color: #38a169;
+  border: 1px solid #c6f6d5;
+}
+
+.variable-button:hover {
+  background-color: #c6f6d5;
+}
+
+/* Botão Emoticons */
+.emoji-button {
+  background-color: #fff5f7;
+  color: #d53f8c;
+  border: 1px solid #fed7e2;
+}
+
+.emoji-button:hover {
+  background-color: #fed7e2;
+}
+
+.emoji-icon {
+  font-size: 1.1em;
+}
+
+/* Efeito para quando o botão está ativo */
+.format-button.active {
+  transform: translateY(0);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+/* ----------------------------------------------------------*/
+
+/* Estilo do botão Adicionar */
+.add-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #4f46e5; /* Indigo-600 */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Efeitos de hover e focus */
+.add-button:hover {
+  background-color: #4338ca; /* Indigo-700 */
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+

@@ -19,7 +19,7 @@ function App() {
     <ThemeProvider>
     <div className="app-container">
        <div className="header-container">
-          <h1>WhatsApp Template Creator</h1>
+          <h1>Criador de templates WhatsApp</h1>
           <div className="action-buttons">
             <SaveButton template={template} />
         </div>
