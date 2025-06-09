@@ -8,7 +8,9 @@ const emojiList = ['😀', '😂', '😍', '😎', '😭', '😡', '🎉', '👍
 const TemplateEditor = ({ template, setTemplate }) => {
   const [showEmojiModal, setShowEmojiModal] = useState(false);
   const [headerType, setHeaderType] = useState(template.headerType || 'text');
-  
+  const [emojiTarget, setEmojiTarget] = useState('body');
+
+
   const handleHeaderTypeChange = (e) => {
     setHeaderType(e.target.value);
     setTemplate({ ...template, headerType: e.target.value, header: '', headerImage: '' });
@@ -36,19 +38,21 @@ const TemplateEditor = ({ template, setTemplate }) => {
     setTemplate({ ...template, buttons: newButtons });
   };
 
-  const insertFormatting = (format) => {
-      const textarea = document.getElementById('body-textarea');
+  const insertFormatting = (format, field = 'body') => {
+      const textarea = document.getElementById(`${field}-textarea`);
+
+      console.log(`${field}-textarea`)  
       if (!textarea) return;
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
-      const value = template.body;
+      const value = template[field];
       let formatted;
       if (format === 'bold') {
         formatted = value.slice(0, start) + '*' + value.slice(start, end) + '*' + value.slice(end);
       } else if (format === 'italic') {
         formatted = value.slice(0, start) + '_' + value.slice(start, end) + '_' + value.slice(end);
       }
-      setTemplate({ ...template, body: formatted });
+      setTemplate({ ...template, [field]: formatted });
       setTimeout(() => {
         textarea.focus();
         textarea.setSelectionRange(start + 1, end + 1);
@@ -56,24 +60,50 @@ const TemplateEditor = ({ template, setTemplate }) => {
       setShowEmojiModal(false); 
   };
 
-  const insertEmoji = (emoji) => {
-      const textarea = document.getElementById('body-textarea');
+  const insertEmoji = (emoji, field = 'body') => {
+      const textarea = document.getElementById(`${field}-textarea`);
       if (!textarea) return;
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
-      const value = template.body;
+      const value = template[field];
       const formatted = value.slice(0, start) + emoji + value.slice(end);
-      setTemplate({ ...template, body: formatted });
+      setTemplate({ ...template, [field]: formatted });
       setTimeout(() => {
         textarea.focus();
         textarea.setSelectionRange(start + emoji.length, start + emoji.length);
       }, 0);
+      setShowEmojiModal(false);
   };
 
-  const insertNextVariable = () => {
-      const textarea = document.getElementById('body-textarea');
+  const insertNextVariableFull = (field = 'body') => {
+      // Junte todos os campos relevantes em uma string só
+      const allText = [template.header, template.body, template.footer]
+        .filter(Boolean)
+        .join(' ');
+
+      // Encontre todas as variáveis usadas no template inteiro
+      const matches = allText.match(/{{(\d+)}}/g) || [];
+      const usedNumbers = matches.map(v => parseInt(v.replace(/[^\d]/g, ''), 10));
+      const nextNumber = usedNumbers.length > 0 ? Math.max(...usedNumbers) + 1 : 1;
+      const variableText = `{{${nextNumber}}}`;
+
+      const textarea = document.getElementById(`${field}-textarea`);
       if (!textarea) return;
-      const value = template.body;
+      const value = template[field];
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const formatted = value.slice(0, start) + variableText + value.slice(end);
+      setTemplate({ ...template, [field]: formatted });
+      setTimeout(() => {
+        textarea.focus();
+        textarea.setSelectionRange(start + variableText.length, start + variableText.length);
+      }, 0);
+  };
+
+  const insertNextVariable = (field = 'body') => {
+      const textarea = document.getElementById(`${field}-textarea`);
+      if (!textarea) return;
+      const value = template[field];
       // Encontra todas as variáveis já usadas no texto
       const matches = value.match(/{{(\d+)}}/g) || [];
       // Extrai os números e encontra o maior
@@ -83,7 +113,7 @@ const TemplateEditor = ({ template, setTemplate }) => {
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
       const formatted = value.slice(0, start) + variableText + value.slice(end);
-      setTemplate({ ...template, body: formatted });
+      setTemplate({ ...template, [field]: formatted });
       setTimeout(() => {
         textarea.focus();
         textarea.setSelectionRange(start + variableText.length, start + variableText.length);
@@ -126,12 +156,53 @@ const TemplateEditor = ({ template, setTemplate }) => {
        
         <label>Cabeçalho</label>
         {headerType === 'text' ? (
-          <input
-            type="text"
-            value={template.header}
-            onChange={handleChange('header')}
-            placeholder="Header text (opcional)"
-          />
+          <React.Fragment>
+             <div className="formatting-toolbar">
+              <button
+                type="button"
+                onClick={() => insertFormatting('bold', 'header')}
+                className="format-button bold-button"
+                aria-label="Negrito"
+              >
+                <b>B</b>
+              </button>
+              <button
+                type="button"
+                onClick={() => insertFormatting('italic', 'header')}
+                className="format-button italic-button"
+                aria-label="Itálico"
+              >
+                <i>I</i>
+              </button>
+
+               <button 
+                  type="button" 
+                  onClick={() => insertNextVariableFull('header')}
+                  className="format-button variable-button"
+                >
+                  Adicionar variável
+             </button>
+
+                <button 
+                  type="button" 
+                  onClick={() => { setEmojiTarget('header'); setShowEmojiModal(true); }}
+                  className="format-button emoji-button"
+                  aria-label="Emoticons"
+              >
+                <span className="emoji-icon">😀</span> Emoticons
+              </button>
+            </div>
+            
+
+            <input
+              id="header-textarea"
+              type="text"
+              value={template.header}
+              onChange={handleChange('header')}
+              placeholder="Header text (opcional)"
+            />
+          </React.Fragment>
+          
         ) : (
           <input
             type="text"
@@ -165,7 +236,7 @@ const TemplateEditor = ({ template, setTemplate }) => {
           
           <button 
             type="button" 
-            onClick={insertNextVariable}
+            onClick={() => insertNextVariableFull('body')}
             className="format-button variable-button"
           >
             Adicionar variável
@@ -173,7 +244,7 @@ const TemplateEditor = ({ template, setTemplate }) => {
           
           <button 
             type="button" 
-            onClick={() => setShowEmojiModal(true)}
+            onClick={() => { setEmojiTarget('body'); setShowEmojiModal(true); }}
             className="format-button emoji-button"
             aria-label="Emoticons"
           >
@@ -214,7 +285,7 @@ const TemplateEditor = ({ template, setTemplate }) => {
                 <button
                   key={idx}
                   style={{ fontSize: 24, padding: 6, border: 'none', background: 'none', cursor: 'pointer' }}
-                  onClick={() => insertEmoji(emoji)}
+                  onClick={() => insertEmoji(emoji, emojiTarget)}
                 >
                   {emoji}
                 </button>
@@ -233,7 +304,44 @@ const TemplateEditor = ({ template, setTemplate }) => {
       
       <div className="form-group">
         <label>Rodapé</label>
+        <div className="formatting-toolbar">
+            <button
+              type="button"
+              onClick={() => insertFormatting('bold', 'footer')}
+              className="format-button bold-button"
+              aria-label="Negrito"
+            >
+              <b>B</b>
+            </button>
+            <button
+              type="button"
+              onClick={() => insertFormatting('italic', 'footer')}
+              className="format-button italic-button"
+              aria-label="Itálico"
+            >
+              <i>I</i>
+            </button>
+
+              <button 
+                type="button" 
+                onClick={() => insertNextVariableFull('footer')}
+                className="format-button variable-button"
+              >
+                Adicionar variável
+            </button>
+
+              <button 
+                type="button" 
+                onClick={() => { setEmojiTarget('footer'); setShowEmojiModal(true); }}
+                className="format-button emoji-button"
+                aria-label="Emoticons"
+            >
+              <span className="emoji-icon">😀</span> Emoticons
+            </button>
+         </div>
+       
         <input 
+          id="footer-textarea"
           type="text" 
           value={template.footer} 
           onChange={handleChange('footer')} 
@@ -261,6 +369,18 @@ const TemplateEditor = ({ template, setTemplate }) => {
             placeholder="Button text"
             className="button-input"
           />
+
+          {/* Campo para URL, só aparece se for URL Button */}
+          {button.type === 'url' && (
+            <input
+              type="text"
+              value={button.url || ''}
+              onChange={e => updateButton(index, 'url', e.target.value)}
+              placeholder="URL do botão"
+              className="button-input"
+              style={{ marginTop: 4 }}
+            />
+          )}
           
           <button 
             type="button" 
