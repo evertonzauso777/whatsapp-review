@@ -1,9 +1,15 @@
 // TemplateEditor.js
 import React, { useState } from 'react';
+import LimitedTextField from './LimitedTextField';
 
 
 const emojiList = ['😀', '😂', '😍', '😎', '😭', '😡', '🎉', '👍', '🙏', '🔥', '🥳', '😅', '😉', '😇', '🤔'];
 
+const LIMITS = {
+  header: 60,
+  body: 1024,
+  footer: 60
+};
 
 const TemplateEditor = ({ template, setTemplate }) => {
   const [showEmojiModal, setShowEmojiModal] = useState(false);
@@ -153,54 +159,16 @@ const TemplateEditor = ({ template, setTemplate }) => {
           </div>
         </div>
        
-       
-        <label>Cabeçalho</label>
         {headerType === 'text' ? (
           <React.Fragment>
-             <div className="formatting-toolbar">
-              <button
-                type="button"
-                onClick={() => insertFormatting('bold', 'header')}
-                className="format-button bold-button"
-                aria-label="Negrito"
-              >
-                <b>B</b>
-              </button>
-              <button
-                type="button"
-                onClick={() => insertFormatting('italic', 'header')}
-                className="format-button italic-button"
-                aria-label="Itálico"
-              >
-                <i>I</i>
-              </button>
-
-               <button 
-                  type="button" 
-                  onClick={() => insertNextVariableFull('header')}
-                  className="format-button variable-button"
-                >
-                  Adicionar variável
-             </button>
-
-                <button 
-                  type="button" 
-                  onClick={() => { setEmojiTarget('header'); setShowEmojiModal(true); }}
-                  className="format-button emoji-button"
-                  aria-label="Emoticons"
-              >
-                <span className="emoji-icon">😀</span> Emoticons
-              </button>
-            </div>
-            
-
-            <input
+           <label>Cabeçalho</label>
+           <LimitedTextField
               id="header-textarea"
-              type="text"
               value={template.header}
               onChange={handleChange('header')}
+              maxLength={LIMITS.header}
               placeholder="Header text (opcional)"
-            />
+           />
           </React.Fragment>
           
         ) : (
@@ -210,6 +178,7 @@ const TemplateEditor = ({ template, setTemplate }) => {
             onChange={handleChange('headerImage')}
             placeholder="Cole a URL da imagem do header"
           />
+          
         )}
       </div>
       
@@ -252,11 +221,13 @@ const TemplateEditor = ({ template, setTemplate }) => {
           </button>
         </div>
         
-        <textarea 
+       <LimitedTextField
           id="body-textarea"
-          value={template.body} 
-          onChange={handleChange('body')} 
+          value={template.body}
+          onChange={handleChange('body')}
+          maxLength={LIMITS.body}
           placeholder="Main message content"
+          type="textarea"
           rows={5}
         />
       </div>
@@ -304,51 +275,14 @@ const TemplateEditor = ({ template, setTemplate }) => {
       
       <div className="form-group">
         <label>Rodapé</label>
-        <div className="formatting-toolbar">
-            <button
-              type="button"
-              onClick={() => insertFormatting('bold', 'footer')}
-              className="format-button bold-button"
-              aria-label="Negrito"
-            >
-              <b>B</b>
-            </button>
-            <button
-              type="button"
-              onClick={() => insertFormatting('italic', 'footer')}
-              className="format-button italic-button"
-              aria-label="Itálico"
-            >
-              <i>I</i>
-            </button>
-
-              <button 
-                type="button" 
-                onClick={() => insertNextVariableFull('footer')}
-                className="format-button variable-button"
-              >
-                Adicionar variável
-            </button>
-
-              <button 
-                type="button" 
-                onClick={() => { setEmojiTarget('footer'); setShowEmojiModal(true); }}
-                className="format-button emoji-button"
-                aria-label="Emoticons"
-            >
-              <span className="emoji-icon">😀</span> Emoticons
-            </button>
-         </div>
-       
-        <input 
-          id="footer-textarea"
-          type="text" 
-          value={template.footer} 
-          onChange={handleChange('footer')} 
-          placeholder="Footer text (optional)"
+         <LimitedTextField
+            id="footer-textarea"
+            value={template.footer}
+            onChange={handleChange('body')}
+            maxLength={LIMITS.footer}
+            placeholder="Footer text (optional)"
         />
-      </div>
-      
+       </div>  
       <h3 className="section-title">Buttons</h3>
       {template.buttons.map((button, index) => (
         <div key={index} className="button-editor">

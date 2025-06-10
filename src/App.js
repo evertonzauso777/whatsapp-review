@@ -1,10 +1,10 @@
 // App.js
 import React, { useState } from 'react';
-import { ThemeProvider } from './ThemeContext';
-import TemplateEditor from './TemplateEditor';
-import WhatsAppPreview from './WhatsAppPreview';
-import ThemeToggle from './ThemeToggle';
-import SaveButton from './SaveButton';
+import { ThemeProvider } from './components/ThemeContext';
+import TemplateEditor from './components/TemplateEditor';
+import WhatsAppPreview from './components/WhatsAppPreview';
+import ThemeToggle from './components/ThemeToggle';
+import SaveButton from './components/SaveButton';
 import './App.css';
 
 function App() {
