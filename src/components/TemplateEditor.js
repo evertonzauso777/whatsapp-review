@@ -1,9 +1,7 @@
 // TemplateEditor.js
 import React, { useState } from 'react';
 import LimitedTextField from './LimitedTextField';
-
-
-const emojiList = ['😀', '😂', '😍', '😎', '😭', '😡', '🎉', '👍', '🙏', '🔥', '🥳', '😅', '😉', '😇', '🤔'];
+import EmojiModal from './EmojiModal';
 
 const LIMITS = {
   header: 60,
@@ -29,7 +27,7 @@ const TemplateEditor = ({ template, setTemplate }) => {
   const addButton = () => {
     setTemplate({
       ...template,
-      buttons: [...template.buttons, { text: '', type: 'url' }]
+      buttons: [...template.buttons, { text: '', type: 'url', url: '', phone_number: '' }]
     });
   };
 
@@ -233,56 +231,14 @@ const TemplateEditor = ({ template, setTemplate }) => {
       </div>
 
       {showEmojiModal && (
-        <div style={{
-          position: 'fixed',
-          top: 0, left: 0, right: 0, bottom: 0,
-          background: 'rgba(0,0,0,0.3)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 1000
-        }}>
-          <div style={{
-            background: '#fff',
-            padding: 20,
-            borderRadius: 8,
-            boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-            minWidth: 250,
-            textAlign: 'center'
-          }}>
-            <div style={{ marginBottom: 10, fontWeight: 'bold' }}>Escolha um emoticon</div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, justifyContent: 'center' }}>
-              {emojiList.map((emoji, idx) => (
-                <button
-                  key={idx}
-                  style={{ fontSize: 24, padding: 6, border: 'none', background: 'none', cursor: 'pointer' }}
-                  onClick={() => insertEmoji(emoji, emojiTarget)}
-                >
-                  {emoji}
-                </button>
-              ))}
-            </div>
-            <button
-              style={{ marginTop: 16 }}
-              className="add-button"
-              onClick={() => setShowEmojiModal(false)}
-            >
-              Fechar
-            </button>
-          </div>
-        </div>
-      )}
-      
-      <div className="form-group">
-        <label>Rodapé</label>
-         <LimitedTextField
-            id="footer-textarea"
-            value={template.footer}
-            onChange={handleChange('body')}
-            maxLength={LIMITS.footer}
-            placeholder="Footer text (optional)"
+         <EmojiModal
+          insertEmoji={insertEmoji}
+          emojiTarget={emojiTarget}
+          setShowEmojiModal={setShowEmojiModal}
         />
-       </div>  
+      )}
+
+
       <h3 className="section-title">Buttons</h3>
       {template.buttons.map((button, index) => (
         <div key={index} className="button-editor">
@@ -304,18 +260,26 @@ const TemplateEditor = ({ template, setTemplate }) => {
             className="button-input"
           />
 
-          {/* Campo para URL, só aparece se for URL Button */}
           {button.type === 'url' && (
             <input
               type="text"
-              value={button.url || ''}
-              onChange={e => updateButton(index, 'url', e.target.value)}
-              placeholder="URL do botão"
+              value={button.url}
+              onChange={(e) => updateButton(index, 'url', e.target.value)}
+              placeholder="URL do Botão"
               className="button-input"
-              style={{ marginTop: 4 }}
             />
           )}
-          
+         
+         {button.type === 'call' && (
+            <input
+              type="text"
+              value={button.phone_number}
+              onChange={(e) => updateButton(index, 'phone_number', e.target.value)}
+              placeholder="Número de Telefone"
+              className="button-input"
+            />
+          )}  
+
           <button 
             type="button" 
             onClick={() => removeButton(index)}
@@ -332,6 +296,8 @@ const TemplateEditor = ({ template, setTemplate }) => {
         <span className="add-button-icon">+</span>
           Adicionar Botão
     </button>
+
+    
     </div>
   );
 };
