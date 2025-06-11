@@ -26,40 +26,24 @@ const EmojiModal = ({ insertEmoji, emojiTarget, setShowEmojiModal }) => {
   };
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0, left: 0, right: 0, bottom: 0,
-      background: 'rgba(0,0,0,0.3)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 1000
-    }}>
-      <div style={{
-        background: '#fff',
-        padding: 20,
-        borderRadius: 8,
-        boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-        minWidth: 300,
-        maxWidth: 400,
-        textAlign: 'center'
-      }}>
-        <div style={{ marginBottom: 10, fontWeight: 'bold', fontSize: 18 }}>Escolha um emoticon</div>
+      <div className="emoji-modal-overlay">
+      <div className="emoji-modal-container">
+        <div className="emoji-modal-header">
+          <h3 className="emoji-modal-title">Selecione um emoji</h3>
+          <button 
+            className="emoji-modal-close-btn"
+            onClick={() => setShowEmojiModal(false)}
+          >
+            &times;
+          </button>
+        </div>
         
         {/* Abas de categorias */}
-        <div style={{ display: 'flex', overflowX: 'auto', gap: 8, marginBottom: 12, paddingBottom: 8 }}>
+        <div className="emoji-category-tabs">
           {Object.keys(emojiCategories).map((category) => (
             <button
               key={category}
-              style={{
-                padding: '6px 12px',
-                border: 'none',
-                background: activeCategory === category ? '#f0f0f0' : 'transparent',
-                borderRadius: 20,
-                cursor: 'pointer',
-                whiteSpace: 'nowrap',
-                fontWeight: activeCategory === category ? 'bold' : 'normal',
-              }}
+              className={`emoji-category-tab ${activeCategory === category ? 'active' : ''}`}
               onClick={() => setActiveCategory(category)}
             >
               {categoryNames[category]}
@@ -68,53 +52,29 @@ const EmojiModal = ({ insertEmoji, emojiTarget, setShowEmojiModal }) => {
         </div>
 
         {/* Lista de emojis da categoria selecionada */}
-        <div style={{ 
-          display: 'flex', 
-          flexWrap: 'wrap', 
-          gap: 8, 
-          justifyContent: 'center',
-          maxHeight: 300,
-          overflowY: 'auto',
-          padding: 8,
-        }}>
+        <div className="emoji-grid">
           {emojiCategories[activeCategory].map((emoji, idx) => (
             <button
               key={idx}
-              style={{ 
-                fontSize: 24, 
-                padding: 6, 
-                border: 'none', 
-                background: 'none', 
-                cursor: 'pointer',
-                borderRadius: 8,
-                transition: 'background 0.2s',
-              }}
+              className="emoji-item"
               onClick={() => {
                 insertEmoji(emoji, emojiTarget);
                 setShowEmojiModal(false);
               }}
-              onMouseEnter={(e) => e.target.style.background = '#f0f0f0'}
-              onMouseLeave={(e) => e.target.style.background = 'none'}
             >
               {emoji}
             </button>
           ))}
         </div>
 
-        <button
-          style={{ 
-            marginTop: 16, 
-            padding: '8px 16px', 
-            background: '#f0f0f0', 
-            border: 'none', 
-            borderRadius: 4, 
-            cursor: 'pointer',
-            fontWeight: 'bold',
-          }}
-          onClick={() => setShowEmojiModal(false)}
-        >
-          Fechar
-        </button>
+        <div className="emoji-modal-footer">
+          <button
+            className="emoji-modal-close-button"
+            onClick={() => setShowEmojiModal(false)}
+          >
+            Fechar
+          </button>
+        </div>
       </div>
     </div>
   );
