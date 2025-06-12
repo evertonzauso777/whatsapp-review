@@ -55,6 +55,8 @@ const TemplateEditor = ({ template, setTemplate }) => {
         formatted = value.slice(0, start) + '*' + value.slice(start, end) + '*' + value.slice(end);
       } else if (format === 'italic') {
         formatted = value.slice(0, start) + '_' + value.slice(start, end) + '_' + value.slice(end);
+      } else if (format === 'strikethrough') {
+        formatted = value.slice(0, start) + '~' + value.slice(start, end) + '~' + value.slice(end);
       }
       setTemplate({ ...template, [field]: formatted });
       setTimeout(() => {
@@ -199,6 +201,15 @@ const TemplateEditor = ({ template, setTemplate }) => {
             aria-label="Itálico"
           >
             <i>I</i>
+          </button>
+
+          <button 
+            type="button" 
+            onClick={() => insertFormatting('strikethrough')}
+            className="format-button strikethrough-button"
+            aria-label="Tachado"
+           >
+            <s>S</s>
           </button>
           
           <button 

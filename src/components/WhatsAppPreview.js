@@ -8,8 +8,9 @@ const WhatsAppPreview = ({ template }) => {
 
   function formatWhatsAppText(text) {
     let formatted = text
-      .replace(/\*(.*?)\*/g, '<b>$1</b>')      // Negrito
-      .replace(/_(.*?)_/g, '<i>$1</i>');       // Itálico
+      .replace(/\*(.*?)\*/g, '<b>$1</b>')    // Negrito
+      .replace(/_(.*?)_/g, '<i>$1</i>')      // Itálico
+       .replace(/~(.*?)~/g, '<s>$1</s>');    // Tachado   
     return formatted;
   }
 
