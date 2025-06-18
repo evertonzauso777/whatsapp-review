@@ -11,7 +11,7 @@ const LIMITS = {
 };
 
 
-const TemplateEditor = ({ template, setTemplate, medias }) => {
+const TemplateEditor = ({ template, setTemplate, medias, loading, error }) => {
   const [showEmojiModal, setShowEmojiModal] = useState(false);
   const [headerType, setHeaderType] = useState(template.headerType || 'text');
   const [emojiTarget, setEmojiTarget] = useState('body');
@@ -189,8 +189,9 @@ const TemplateEditor = ({ template, setTemplate, medias }) => {
         <button 
           type="button"
           className="add-button"
+          disabled={loading}
           onClick={() => setShowMediaModal(true)}>
-            Selecionar mídia
+            {loading ? (<div>Carregando mídias...</div>) : (<>  Selecionar mídia </>)}
         </button>
       </div>
       )}
@@ -254,7 +255,6 @@ const TemplateEditor = ({ template, setTemplate, medias }) => {
         />
       </div>
 
-     
       <MediaModal
         show={showMediaModal}
         medias={medias}
