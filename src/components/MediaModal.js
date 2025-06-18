@@ -1,5 +1,5 @@
-import React from 'react';
-import { FiX, FiFile, FiImage, FiFilm, FiFileText } from 'react-icons/fi';
+import React, { useState } from 'react';
+import { FiX, FiFile, FiImage, FiFilm, FiFileText, FiSearch } from 'react-icons/fi';
 import '../MediaModal.css';
 
 const getDocumentIcon = (url, size = 24) => {
@@ -16,7 +16,16 @@ const MediaModal = ({
   onClose,
   title = 'Selecione uma mídia'
 }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+
   if (!show) return null;
+
+  // Filtrar mídias com base no termo de busca
+  const filteredMedias = medias.filter(media => {
+    const matchesSearch = media.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const isSupportedType = ['image', 'video', 'document'].includes(media.type);
+    return matchesSearch && isSupportedType;
+  });
 
   return (
     <div className="media-modal-overlay">
@@ -32,12 +41,25 @@ const MediaModal = ({
           </button>
         </div>
         
+        {/* Search Bar */}
+        <div className="media-modal-search">
+          <div className="relative">
+            <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+            <input
+              type="text"
+              placeholder="Buscar mídia por nome..."
+              className="media-search-input pl-10"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </div>
+
         {/* Content */}
         <div className="media-modal-content">
           <div className="media-modal-grid">
-            {medias
-              .filter(m => m.type === 'image' || m.type === 'video' || m.type === 'document')
-              .map(media => (
+            {filteredMedias.length > 0 ? (
+              filteredMedias.map(media => (
                 <div 
                   key={media.ID} 
                   onClick={() => onSelect(media)}
@@ -87,7 +109,16 @@ const MediaModal = ({
                     {media.type === 'document' ? media.URL.split('.').pop().toUpperCase() : media.type}
                   </div>
                 </div>
-              ))}
+              ))
+            ) : (
+              <div className="media-no-results">
+                {searchTerm ? (
+                  `Nenhuma mídia encontrada para "${searchTerm}"`
+                ) : (
+                  'Nenhuma mídia disponível'
+                )}
+              </div>
+            )}
           </div>
         </div>
         

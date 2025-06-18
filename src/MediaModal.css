@@ -177,3 +177,40 @@
 .document-icon-default {
   color: #6b7280;
 }
+
+
+/* ------------------------------------------------ */
+
+/* Search bar styles */
+.media-modal-search {
+  padding: 0 1.5rem 1rem;
+}
+
+.media-search-input {
+  width: 95%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  color: #374151;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.media-search-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.media-search-input::placeholder {
+  color: #9ca3af;
+}
+
+/* No results message */
+.media-no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 2rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
