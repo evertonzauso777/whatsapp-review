@@ -1,15 +1,12 @@
 import React from 'react';
+import { FiX, FiFile, FiImage, FiFilm, FiFileText } from 'react-icons/fi';
+import '../MediaModal.css';
 
-const getDocumentIcon = (url) => {
-  // Você pode melhorar para diferentes tipos de documento
+const getDocumentIcon = (url, size = 24) => {
   if (url.endsWith('.pdf')) {
-    return (
-      <span role="img" aria-label="PDF" style={{ fontSize: 40 }}>📄</span>
-    );
+    return <FiFileText size={size} className="document-icon-pdf" />;
   }
-  return (
-    <span role="img" aria-label="Documento" style={{ fontSize: 40 }}>📁</span>
-  );
+  return <FiFile size={size} className="document-icon-default" />;
 };
 
 const MediaModal = ({
@@ -17,78 +14,92 @@ const MediaModal = ({
   medias,
   onSelect,
   onClose,
-  title = 'Escolha uma mídia'
+  title = 'Selecione uma mídia'
 }) => {
   if (!show) return null;
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0, left: 0, right: 0, bottom: 0,
-      background: 'rgba(0,0,0,0.3)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 1000
-    }}>
-      <div style={{
-        background: '#fff',
-        padding: 20,
-        borderRadius: 8,
-        boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-        minWidth: 300,
-        textAlign: 'center'
-      }}>
-        <div style={{ marginBottom: 10, fontWeight: 'bold' }}>{title}</div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'center' }}>
-          {medias
-            .filter(m => m.type === 'image' || m.type === 'video' || m.type === 'document')
-            .map(media => (
-              <div key={media.ID} style={{ cursor: 'pointer', width: 100, textAlign: 'center' }}>
-                {media.type === 'image' ? (
-                  <img
-                    src={media.URL}
-                    alt={media.name}
-                    style={{ width: 100, height: 60, objectFit: 'cover', border: '2px solid #eee', borderRadius: 4 }}
-                    onClick={() => onSelect(media)}
-                  />
-                ) : media.type === 'video' ? (
-                  <video
-                    src={media.URL}
-                    style={{ width: 100, height: 60, objectFit: 'cover', border: '2px solid #eee', borderRadius: 4 }}
-                    onClick={() => onSelect(media)}
-                    controls={false}
-                    muted
-                  />
-                ) : (
-                  <div
-                    onClick={() => onSelect(media)}
-                    style={{
-                      width: 100,
-                      height: 60,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      border: '2px solid #eee',
-                      borderRadius: 4,
-                      background: '#f5f5f5'
-                    }}
-                  >
-                    {getDocumentIcon(media.URL)}
-                  </div>
-                )}
-                <div style={{ fontSize: 12, marginTop: 4 }}>{media.name}</div>
-              </div>
-            ))}
+    <div className="media-modal-overlay">
+      <div className="media-modal-container">
+        {/* Header */}
+        <div className="media-modal-header">
+          <h3 className="media-modal-title">{title}</h3>
+          <button 
+            onClick={onClose}
+            className="media-modal-close-btn"
+          >
+            <FiX size={24} />
+          </button>
         </div>
-        <button
-          type="button" 
-          className="add-button"
-          style={{ marginTop: 16 }}
-          onClick={onClose}
-        >
-          Fechar
-        </button>
+        
+        {/* Content */}
+        <div className="media-modal-content">
+          <div className="media-modal-grid">
+            {medias
+              .filter(m => m.type === 'image' || m.type === 'video' || m.type === 'document')
+              .map(media => (
+                <div 
+                  key={media.ID} 
+                  onClick={() => onSelect(media)}
+                  className="media-item"
+                >
+                  <div className="media-thumbnail-container">
+                    {media.type === 'image' ? (
+                      <>
+                        <img
+                          src={media.URL}
+                          alt={media.name}
+                          className="media-thumbnail"
+                        />
+                        <div className="media-thumbnail-overlay" />
+                        <FiImage 
+                          size={24} 
+                          className="media-thumbnail-icon" 
+                        />
+                      </>
+                    ) : media.type === 'video' ? (
+                      <>
+                        <video
+                          src={media.URL}
+                          className="media-thumbnail"
+                          controls={false}
+                          muted
+                        />
+                        <div className="media-thumbnail-overlay" />
+                        <FiFilm 
+                          size={24} 
+                          className="media-thumbnail-icon" 
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <div className="p-4">
+                          {getDocumentIcon(media.URL, 32)}
+                        </div>
+                        <div className="media-thumbnail-overlay" />
+                      </>
+                    )}
+                  </div>
+                  <div className="media-name">
+                    {media.name}
+                  </div>
+                  <div className="media-type">
+                    {media.type === 'document' ? media.URL.split('.').pop().toUpperCase() : media.type}
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
+        
+        {/* Footer */}
+        <div className="media-modal-footer">
+          <button
+            onClick={onClose}
+            className="media-modal-cancel-btn"
+          >
+            Fechar
+          </button>
+        </div>
       </div>
     </div>
   );

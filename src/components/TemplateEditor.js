@@ -178,7 +178,7 @@ const TemplateEditor = ({ template, setTemplate, medias }) => {
             type="text"
             value={template.headerImage || ''}
             onChange={handleChange('headerImage')}
-            placeholder="Cole a URL da imagem do header"
+            placeholder="Selecione a mídia abaixo"
           />
           
         )}
