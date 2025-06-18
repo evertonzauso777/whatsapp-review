@@ -3,14 +3,18 @@ import React from 'react';
 import { useTheme } from './ThemeContext';
 
 
-const WhatsAppPreview = ({ template }) => {
+const WhatsAppPreview = ({ template, medias }) => {
   const { darkMode } = useTheme();  
+
+  const headerMedia = medias.find(
+    m => m.ID === template.headerImage && (m.type === 'image' || m.type === 'video' || m.type === 'document')
+  );
 
   function formatWhatsAppText(text) {
     let formatted = text
       .replace(/\*(.*?)\*/g, '<b>$1</b>')    // Negrito
       .replace(/_(.*?)_/g, '<i>$1</i>')      // Itálico
-       .replace(/~(.*?)~/g, '<s>$1</s>');    // Tachado   
+      .replace(/~(.*?)~/g, '<s>$1</s>');    // Tachado   
     return formatted;
   }
 
@@ -32,21 +36,59 @@ const WhatsAppPreview = ({ template }) => {
         
         
         <div className="whatsapp-message">
-          {template.headerType === 'image' && template.headerImage ? (
-              <div className="message-header-image" style={{ width: '100%', padding: 0, margin: 0 }}>
-                <img src={template.headerImage} alt="Header" 
-                style={{  width: '100%',
-                          height: 'auto',
-                          display: 'block',
-                          borderRadius: 0,
-                          objectFit: 'cover',
-                          maxHeight: 200 }} />
-              </div>
-           ) : template.header ? (
-              <div className="message-header">
-                {template.header}
-              </div>
-            ) : null}
+          {template.headerType === 'image' && headerMedia ? (
+          <div className="message-header-media" style={{ width: '100%', height: 200, overflow: 'hidden' }}>
+            {headerMedia.type === 'image' ? (
+                <img
+                  src={headerMedia.URL}
+                  alt="Header"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    display: 'block'
+                  }}
+                />
+              ) : headerMedia.type === 'video' ? (
+              <video
+                src={headerMedia.URL}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  display: 'block'
+                }}
+                controls
+              />
+            ) : (
+              <a
+                href={headerMedia.URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '100%',
+                  height: '100%',
+                  textDecoration: 'none',
+                  color: '#128c7e',
+                  fontWeight: 'bold',
+                  fontSize: 18
+                }}
+              >
+                <span style={{ fontSize: 48 }}>📄</span>
+                {headerMedia.name || 'Documento'}
+                <span style={{ fontSize: 12, color: '#555', marginTop: 4 }}>Clique para visualizar</span>
+              </a>
+            )}
+          </div>
+          ) : template.header ? (
+            <div className="message-header">
+              {template.header}
+            </div>
+          ) : null}
          
           <div className="message-body">
             {template.body.split('\n').map((line, i) => (

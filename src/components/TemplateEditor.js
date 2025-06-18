@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import LimitedTextField from './LimitedTextField';
 import EmojiModal from './EmojiModal';
+import MediaModal from './MediaModal';
 
 const LIMITS = {
   header: 60,
@@ -9,11 +10,12 @@ const LIMITS = {
   footer: 60
 };
 
-const TemplateEditor = ({ template, setTemplate }) => {
+
+const TemplateEditor = ({ template, setTemplate, medias }) => {
   const [showEmojiModal, setShowEmojiModal] = useState(false);
   const [headerType, setHeaderType] = useState(template.headerType || 'text');
   const [emojiTarget, setEmojiTarget] = useState('body');
-
+  const [showMediaModal, setShowMediaModal] = useState(false);
 
   const handleHeaderTypeChange = (e) => {
     setHeaderType(e.target.value);
@@ -154,7 +156,7 @@ const TemplateEditor = ({ template, setTemplate }) => {
                 checked={headerType === 'image'}
                 onChange={handleHeaderTypeChange}
               />
-              Imagem
+              Mídia
             </label>
           </div>
         </div>
@@ -181,6 +183,17 @@ const TemplateEditor = ({ template, setTemplate }) => {
           
         )}
       </div>
+
+      {headerType === 'image' && (
+        <div>
+        <button 
+          type="button"
+          className="add-button"
+          onClick={() => setShowMediaModal(true)}>
+            Selecionar mídia
+        </button>
+      </div>
+      )}
       
       <div className="form-group">
         <label>Conteúdo</label>
@@ -241,6 +254,23 @@ const TemplateEditor = ({ template, setTemplate }) => {
         />
       </div>
 
+     
+      <MediaModal
+        show={showMediaModal}
+        medias={medias}
+        onSelect={media => {
+          setTemplate({ 
+            ...template, 
+            headerImage: media.ID, 
+            headerMediaType: media.type // 'image' ou 'video'
+          });
+          setShowMediaModal(false);
+        }}
+        onClose={() => setShowMediaModal(false)}
+        title="Escolha uma mídia"
+      />
+
+
       {showEmojiModal && (
          <EmojiModal
           insertEmoji={insertEmoji}
@@ -248,6 +278,21 @@ const TemplateEditor = ({ template, setTemplate }) => {
           setShowEmojiModal={setShowEmojiModal}
         />
       )}
+
+       
+
+      <div className="form-group">
+       <label>Rodapé</label>
+       <LimitedTextField
+          id="footer-textarea"
+          value={template.footer}
+          onChange={handleChange('footer')}
+          maxLength={LIMITS.footer}
+          placeholder="Footer text (optional)"
+          type="text"
+          rows={5}
+        />
+      </div>
 
 
       <h3 className="section-title">Buttons</h3>

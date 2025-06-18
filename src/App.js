@@ -7,6 +7,10 @@ import ThemeToggle from './components/ThemeToggle';
 import SaveButton from './components/SaveButton';
 import './App.css';
 
+const medias = [
+ 
+];
+
 function App() {
   const [template, setTemplate] = useState({
     header: '',
@@ -26,8 +30,8 @@ function App() {
           {/* <ThemeToggle /> */}
       </div>
       <div className="editor-preview-container">
-        <TemplateEditor template={template} setTemplate={setTemplate} />
-        <WhatsAppPreview template={template} />
+        <TemplateEditor template={template} setTemplate={setTemplate} medias={medias} />
+        <WhatsAppPreview template={template} medias={medias} />
       </div>
     </div>
     </ThemeProvider>
