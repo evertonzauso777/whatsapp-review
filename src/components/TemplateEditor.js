@@ -10,8 +10,12 @@ const LIMITS = {
   footer: 60
 };
 
+const actions = [
+  "cadastro",
+  "benefícios"
+];
 
-const TemplateEditor = ({ template, setTemplate, medias, loading, error }) => {
+const TemplateEditor = ({ template, setTemplate, medias, loading, page, setPage, hasNextPage }) => {
   const [showEmojiModal, setShowEmojiModal] = useState(false);
   const [headerType, setHeaderType] = useState(template.headerType || 'text');
   const [emojiTarget, setEmojiTarget] = useState('body');
@@ -258,6 +262,10 @@ const TemplateEditor = ({ template, setTemplate, medias, loading, error }) => {
       <MediaModal
         show={showMediaModal}
         medias={medias}
+        loading={loading}
+        page={page}
+        setPage={setPage}
+        hasNextPage={hasNextPage}
         onSelect={media => {
           setTemplate({ 
             ...template, 
@@ -306,6 +314,7 @@ const TemplateEditor = ({ template, setTemplate, medias, loading, error }) => {
             <option value="url">URL Button</option>
             <option value="call">Call Button</option>
             <option value="quick_reply">Quick Reply</option>
+            <option value="copy">Copiar código</option>
           </select>
           
           <input
@@ -315,6 +324,20 @@ const TemplateEditor = ({ template, setTemplate, medias, loading, error }) => {
             placeholder="Button text"
             className="button-input"
           />
+
+          {button.type === 'quick_reply' && (
+            <select
+              value={button.action || ''}
+              onChange={e => updateButton(index, 'action', e.target.value)}
+              className="button-select"
+              style={{ marginTop: 4 }}
+            >
+              <option value="">Selecione uma ação</option>
+              {actions.map(action => (
+                <option key={action} value={action}>{action}</option>
+              ))}
+            </select>
+          )}
 
           {button.type === 'url' && (
             <input

@@ -12,6 +12,10 @@ const getDocumentIcon = (url, size = 24) => {
 const MediaModal = ({
   show,
   medias,
+  loading,
+  page,
+  setPage,
+  hasNextPage,
   onSelect,
   onClose,
   title = 'Selecione uma mídia'
@@ -120,6 +124,24 @@ const MediaModal = ({
               </div>
             )}
           </div>
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 16, marginTop: 16 }}>
+          <button
+            onClick={() => setPage(page - 1)}
+            disabled={page <= 1 || loading}
+            style={{ padding: '6px 16px', borderRadius: 4, border: '1px solid #ccc', background: '#f5f5f5', cursor: page <= 1 ? 'not-allowed' : 'pointer' }}
+          >
+            Página anterior
+          </button>
+          <span style={{ alignSelf: 'center' }}>Página {page}</span>
+          <button
+            onClick={() => setPage(page + 1)}
+            disabled={!hasNextPage || loading}
+            style={{ padding: '6px 16px', borderRadius: 4, border: '1px solid #ccc', background: '#f5f5f5', cursor: !hasNextPage ? 'not-allowed' : 'pointer' }}
+          >
+            Próxima página
+          </button>
         </div>
         
         {/* Footer */}

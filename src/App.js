@@ -18,14 +18,16 @@ function App() {
   const [medias, setMedias] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);  
+  const [hasNextPage, setHasNextPage] = useState(false)
 
   useEffect(() => {
-    loadMedias();
-   }, []);
+    loadMedias(page);
+   }, [page]);
 
-   const loadMedias = () => {
+   const loadMedias = (pageNumber = 1) => {
      setLoading(true);
-     fetch('http://localhost:3000/api/medias', {
+     fetch('http://localhost:8080/api/medias', {
         method: 'POST',
         headers: {
           'Client-Token': 'F52d9c9210d984a369cf3f1897d5ab399S',
@@ -35,12 +37,13 @@ function App() {
           token: '',
           ID: '',
           name: '',
-          page: 1
+          page: pageNumber
         })
       })
         .then(res => res.json())
         .then(data => {
           setMedias(data.medias || []);
+          setHasNextPage(data.hasNextPage || data.medias?.length === 20);
           setLoading(false);
         })
         .catch(err => {
@@ -67,7 +70,9 @@ function App() {
           setTemplate={setTemplate} 
           medias={medias}
           loading={loading}
-          error={error} />
+          page={page}
+          setPage={setPage}
+          hasNextPage={hasNextPage} />
         <WhatsAppPreview template={template} medias={medias} />
       </div>
     </div>
